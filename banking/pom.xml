@@ -18,6 +18,7 @@
 
     <modules>
         <module>address</module>
+        <module>client</module>
     </modules>
 
     <properties>
