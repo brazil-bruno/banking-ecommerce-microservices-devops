@@ -19,6 +19,7 @@
     <modules>
         <module>address</module>
         <module>client</module>
+        <module>account</module>
     </modules>
 
     <properties>
