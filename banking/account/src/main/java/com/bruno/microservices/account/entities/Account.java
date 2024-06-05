@@ -26,4 +26,6 @@ public class Account {
 
     private String accountPassword;
 
+    private String clientID;
+
 }
