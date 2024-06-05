@@ -25,4 +25,6 @@ public class Client {
     private String clientEmail;
 
     private String clientPhone;
+
+    private String addressID;
 }
