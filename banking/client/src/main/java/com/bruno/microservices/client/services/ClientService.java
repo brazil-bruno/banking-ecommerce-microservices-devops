@@ -1,6 +1,9 @@
 package com.bruno.microservices.client.services;
 
+import com.bruno.microservices.client.dto.ClientDTO;
+import com.bruno.microservices.client.entities.Address;
 import com.bruno.microservices.client.entities.Client;
+import com.bruno.microservices.client.feignclients.AddressFeignClient;
 import com.bruno.microservices.client.repositories.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,18 +17,33 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
 
+    private final AddressFeignClient addressFeignClient;
+
     public List<Client> findAllClients() {
         return clientRepository.findAll();
     }
 
-    public Client createNewClient(Client client) {
-        Client entity = Client.builder()
-                .clientID(UUID.randomUUID().toString())
-                .clientName(client.getClientName())
-                .clientEmail(client.getClientEmail())
-                .clientPhone(client.getClientPhone())
+    public Client createNewClient(ClientDTO clientDTO) {
+        Address address = Address.builder()
+                .addressID(UUID.randomUUID().toString())
+                .publicArea(clientDTO.getPublicArea())
+                .addressNumber(clientDTO.getAddressNumber())
+                .complement(clientDTO.getClientName())
+                .neighborhood(clientDTO.getNeighborhood())
+                .zipCode(clientDTO.getZipCode())
+                .city(clientDTO.getCity())
+                .state(clientDTO.getState())
                 .build();
-        return clientRepository.save(entity);
+        addressFeignClient.createNewAddress(address);
+
+        Client client = Client.builder()
+                .clientID(UUID.randomUUID().toString())
+                .clientName(clientDTO.getClientName())
+                .clientEmail(clientDTO.getClientEmail())
+                .clientPhone(clientDTO.getClientPhone())
+                .addressID(address.getAddressID())
+                .build();
+        return clientRepository.save(client);
     }
 
     public Client findClientById(String clientID) {
