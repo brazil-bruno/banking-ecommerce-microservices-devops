@@ -1,5 +1,6 @@
 package com.bruno.microservices.client.controllers;
 
+import com.bruno.microservices.client.dto.ClientDTO;
 import com.bruno.microservices.client.entities.Client;
 import com.bruno.microservices.client.services.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,8 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Client createNewClient(@RequestBody Client client) {
-        return clientService.createNewClient(client);
+    public Client createNewClient(@RequestBody ClientDTO clientDTO) {
+        return clientService.createNewClient(clientDTO);
     }
 
     @GetMapping("/{clientID}")
