@@ -1,5 +1,6 @@
 package com.bruno.microservices.account.controllers;
 
+import com.bruno.microservices.account.dto.AccountDTO;
 import com.bruno.microservices.account.entities.Account;
 import com.bruno.microservices.account.services.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +22,10 @@ public class AccountController {
         return accountService.findAllAccounts();
     }
 
-    @PostMapping
+    @PostMapping("client-id/{clientID}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Account createNewAccount(@RequestBody Account account) {
-        return accountService.createNewAccount(account);
+    public Account createNewAccount(@RequestBody AccountDTO accountDTO, @PathVariable String clientID) {
+        return accountService.createNewAccount(accountDTO, clientID);
     }
 
     @GetMapping("/{accountID}")
