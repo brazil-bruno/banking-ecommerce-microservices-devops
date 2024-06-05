@@ -1,6 +1,9 @@
 package com.bruno.microservices.account.services;
 
+import com.bruno.microservices.account.dto.AccountDTO;
 import com.bruno.microservices.account.entities.Account;
+import com.bruno.microservices.account.entities.Client;
+import com.bruno.microservices.account.feignclients.ClientFeignClient;
 import com.bruno.microservices.account.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,16 +18,21 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
+    private final ClientFeignClient clientFeignClient;
+
     public List<Account> findAllAccounts() {
         return accountRepository.findAll();
     }
 
-    public Account createNewAccount(Account account) {
+    public Account createNewAccount(AccountDTO accountDTO, String clientID) {
+        Client client = clientFeignClient.findClientById(clientID);
+
         Account entity = Account.builder()
                 .accountID(UUID.randomUUID().toString())
                 .accountNumber(accountNumberGenerate())
                 .accountBalance(0.0)
-                .accountPassword(account.getAccountPassword())
+                .accountPassword(accountDTO.getAccountPassword())
+                .clientID(client.getClientID())
                 .build();
         return accountRepository.save(entity);
     }
