@@ -20,7 +20,7 @@ public class AddressService {
 
     public Address createNewAddress(Address address) {
         Address entity = Address.builder()
-                .addressID(UUID.randomUUID().toString())
+                .addressID(address.getAddressID())
                 .publicArea(address.getPublicArea())
                 .addressNumber(address.getAddressNumber())
                 .complement(address.getComplement())
