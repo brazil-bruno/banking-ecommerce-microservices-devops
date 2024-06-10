@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class Client {
 
-    private String clientID;
+    private UUID clientID;
 
     private String clientName;
 
@@ -19,5 +21,5 @@ public class Client {
 
     private String clientPassword;
 
-    private String addressID;
+    private UUID addressID;
 }
