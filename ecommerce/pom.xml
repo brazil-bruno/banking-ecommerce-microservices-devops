@@ -20,6 +20,9 @@
         <module>client</module>
         <module>eureka</module>
         <module>gateway</module>
+        <module>order</module>
+        <module>product</module>
+        <module>payment</module>
     </modules>
 
     <properties>
