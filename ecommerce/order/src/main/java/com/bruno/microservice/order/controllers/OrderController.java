@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -21,10 +22,16 @@ public class OrderController {
         return orderService.findAllOrders();
     }
 
-    @PostMapping
+    @PostMapping("/client-id/{clientID}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Order createNewOrder(@RequestBody Order order) {
-        return orderService.createNewOrder(order);
+    public Order createNewOrder(@RequestBody Order order, @PathVariable UUID clientID) {
+        return orderService.createNewOrder(order, clientID);
+    }
+
+    @GetMapping("/{orderID}")
+    @ResponseStatus(HttpStatus.OK)
+    public Order findOrderById(@PathVariable UUID orderID) {
+        return orderService.findOrderById(orderID);
     }
 
 }
