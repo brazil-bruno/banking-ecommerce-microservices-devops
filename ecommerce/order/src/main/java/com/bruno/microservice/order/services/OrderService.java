@@ -50,6 +50,10 @@ public class OrderService {
         for (OrderItem orderItem: order.getOrderItems()) {
             Product entity = productFeignClient.findProductById(orderItem.getProductID());
 
+            entity.setProductQuantity(entity.getProductQuantity() - orderItem.getQuantity());
+
+            productFeignClient.updateProduct(entity, orderItem.getProductID());
+
             orderItem.setProductName(entity.getProductName());
             orderItem.setProductPrice(entity.getProductPrice());
         }
