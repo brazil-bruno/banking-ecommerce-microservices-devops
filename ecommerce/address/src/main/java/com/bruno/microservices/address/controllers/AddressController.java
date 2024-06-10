@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/addresses")
@@ -28,19 +29,19 @@ public class AddressController {
     }
 
     @GetMapping("/{addressID}")
-    public Address findAddressById(@PathVariable String addressID) {
+    public Address findAddressById(@PathVariable UUID addressID) {
         return addressService.findAddressById(addressID);
     }
 
     @PutMapping("/{addressID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Address updateAddress(@RequestBody Address address, @PathVariable String addressID) {
+    public Address updateAddress(@RequestBody Address address, @PathVariable UUID addressID) {
         return addressService.updateAddress(address, addressID);
     }
 
     @DeleteMapping("/{addressID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAddressById(@PathVariable String addressID) {
+    public void deleteAddressById(@PathVariable UUID addressID) {
         addressService.deleteAddressById(addressID);
     }
 }

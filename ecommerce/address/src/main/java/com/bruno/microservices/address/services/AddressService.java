@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,6 @@ public class AddressService {
 
     public Address createNewAddress(Address address) {
         Address entity = Address.builder()
-                .addressID(address.getAddressID())
                 .publicArea(address.getPublicArea())
                 .addressNumber(address.getAddressNumber())
                 .complement(address.getComplement())
@@ -31,11 +31,11 @@ public class AddressService {
         return addressRepository.save(entity);
     }
 
-    public Address findAddressById(String addressID) {
+    public Address findAddressById(UUID addressID) {
         return addressRepository.findById(addressID).get();
     }
 
-    public Address updateAddress(Address address, String addressID) {
+    public Address updateAddress(Address address, UUID addressID) {
         Address entity = addressRepository.findById(addressID).get();
         entity.setPublicArea(address.getPublicArea());
         entity.setAddressNumber(address.getAddressNumber());
@@ -47,7 +47,7 @@ public class AddressService {
         return addressRepository.save(entity);
     }
 
-    public void deleteAddressById(String addressID) {
+    public void deleteAddressById(UUID addressID) {
         addressRepository.deleteById(addressID);
     }
 }
