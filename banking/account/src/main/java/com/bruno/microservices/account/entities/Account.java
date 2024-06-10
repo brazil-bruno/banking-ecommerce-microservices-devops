@@ -5,9 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tb_account")
@@ -18,7 +17,8 @@ import javax.persistence.Table;
 public class Account {
 
     @Id
-    private String accountID;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID accountID;
 
     private String accountNumber;
 
@@ -26,6 +26,6 @@ public class Account {
 
     private String accountPassword;
 
-    private String clientID;
+    private UUID clientID;
 
 }

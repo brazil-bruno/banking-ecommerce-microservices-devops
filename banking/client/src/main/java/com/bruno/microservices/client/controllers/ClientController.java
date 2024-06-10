@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -30,19 +31,19 @@ public class ClientController {
 
     @GetMapping("/{clientID}")
     @ResponseStatus(HttpStatus.OK)
-    public Client findClientById(@PathVariable String clientID) {
+    public Client findClientById(@PathVariable UUID clientID) {
         return clientService.findClientById(clientID);
     }
 
     @PutMapping("/{clientID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Client updateClient(@RequestBody Client client, @PathVariable String clientID) {
+    public Client updateClient(@RequestBody Client client, @PathVariable UUID clientID) {
         return clientService.updateClient(client, clientID);
     }
 
     @DeleteMapping("/{clientID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteClientById(@PathVariable String clientID) {
+    public void deleteClientById(@PathVariable UUID clientID) {
         clientService.deleteClientById(clientID);
     }
 }

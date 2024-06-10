@@ -6,13 +6,15 @@ import com.bruno.microservices.account.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class AccountTransactionService {
 
     private final AccountRepository accountRepository;
 
-    public void deposit(Account account, String accountID) {
+    public void deposit(Account account, UUID accountID) {
 
         Account entity = accountRepository.findById(accountID).get();
         double balance = entity.getAccountBalance();
@@ -22,7 +24,7 @@ public class AccountTransactionService {
 
     }
 
-    public void withdraw(Account account, String accountID) {
+    public void withdraw(Account account, UUID accountID) {
 
         Account entity = accountRepository.findById(accountID).get();
         double balance = entity.getAccountBalance();
@@ -32,7 +34,7 @@ public class AccountTransactionService {
 
     }
 
-    public double balance(String accountID) {
+    public double balance(UUID accountID) {
 
         Account entity = accountRepository.findById(accountID).get();
         return entity.getAccountBalance();

@@ -24,11 +24,10 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    public Account createNewAccount(AccountDTO accountDTO, String clientID) {
+    public Account createNewAccount(AccountDTO accountDTO, UUID clientID) {
         Client client = clientFeignClient.findClientById(clientID);
 
         Account entity = Account.builder()
-                .accountID(UUID.randomUUID().toString())
                 .accountNumber(accountNumberGenerate())
                 .accountBalance(0.0)
                 .accountPassword(accountDTO.getAccountPassword())
@@ -37,17 +36,17 @@ public class AccountService {
         return accountRepository.save(entity);
     }
 
-    public Account findAccountById(String accountID) {
+    public Account findAccountById(UUID accountID) {
         return accountRepository.findById(accountID).get();
     }
 
-    public Account updateAccount(Account account, String accountID) {
+    public Account updateAccount(Account account, UUID accountID) {
         Account entity = accountRepository.findById(accountID).get();
         entity.setAccountPassword(account.getAccountPassword());
         return accountRepository.save(entity);
     }
 
-    public void deleteAccountById(String accountID) {
+    public void deleteAccountById(UUID accountID) {
         accountRepository.deleteById(accountID);
     }
 
