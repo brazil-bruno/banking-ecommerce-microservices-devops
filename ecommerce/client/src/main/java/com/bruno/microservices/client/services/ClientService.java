@@ -25,7 +25,6 @@ public class ClientService {
 
     public Client createNewClient(ClientDTO clientDTO) {
         Address address = Address.builder()
-                .addressID(UUID.randomUUID().toString())
                 .publicArea(clientDTO.getPublicArea())
                 .addressNumber(clientDTO.getAddressNumber())
                 .complement(clientDTO.getClientName())
@@ -34,10 +33,9 @@ public class ClientService {
                 .city(clientDTO.getCity())
                 .state(clientDTO.getState())
                 .build();
-        addressFeignClient.createNewAddress(address);
+        address = addressFeignClient.createNewAddress(address);
 
         Client client = Client.builder()
-                .clientID(UUID.randomUUID().toString())
                 .clientName(clientDTO.getClientName())
                 .clientEmail(clientDTO.getClientEmail())
                 .clientPhone(clientDTO.getClientPhone())
@@ -47,11 +45,11 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
-    public Client findClientById(String clientID) {
+    public Client findClientById(UUID clientID) {
         return clientRepository.findById(clientID).get();
     }
 
-    public Client updateClient(Client client, String clientID) {
+    public Client updateClient(Client client, UUID clientID) {
         Client entity = clientRepository.findById(clientID).get();
         entity.setClientEmail(client.getClientEmail());
         entity.setClientPhone(client.getClientPhone());
@@ -59,7 +57,9 @@ public class ClientService {
         return clientRepository.save(entity);
     }
 
-    public void deleteClientById(String clientID) {
+    public void deleteClientById(UUID clientID) {
+        Client entity = clientRepository.findById(clientID).get();
+        addressFeignClient.deleteAddressById(entity.getAddressID());
         clientRepository.deleteById(clientID);
     }
 }
