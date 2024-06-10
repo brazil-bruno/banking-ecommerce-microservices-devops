@@ -24,26 +24,25 @@ public class CardService {
         return cardRepository.findAll();
     }
 
-    public Card createNewCard(CardDTO cardDTO, String accountID) {
+    public Card createNewCard(CardDTO cardDTO, UUID accountID) {
         Account account = accountFeignClient.findAccountById(accountID);
 
         Card entity = Card.builder()
-                .cardID(UUID.randomUUID().toString())
                 .cardNumber(cardNumberGenerate())
                 .cvc(cvcNumberGenerate())
                 .cardPassword(cardDTO.getCardPassword())
-                .cardLimit(0.0)
+                .cardLimit(10000.0)
                 .accountID(account.getAccountID())
                 .build();
         return cardRepository.save(entity);
 
     }
 
-    public Card findCardById(String cardID) {
+    public Card findCardById(UUID cardID) {
         return cardRepository.findById(cardID).get();
     }
 
-    public Card updateCard(CardDTO cardDTO, String cardID) {
+    public Card updateCard(CardDTO cardDTO, UUID cardID) {
 
         Card entity = cardRepository.getOne(cardID);
         entity.setCardPassword(cardDTO.getCardPassword());
@@ -51,7 +50,7 @@ public class CardService {
 
     }
 
-    public void deleteCardById(String cardID) {
+    public void deleteCardById(UUID cardID) {
         cardRepository.deleteById(cardID);
     }
 

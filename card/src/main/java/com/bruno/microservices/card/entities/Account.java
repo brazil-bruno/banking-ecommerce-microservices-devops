@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class Account {
 
-    private String accountID;
+    private UUID accountID;
 
     private String accountNumber;
 
@@ -17,5 +19,5 @@ public class Account {
 
     private double balance;
 
-    private String clientID;
+    private UUID clientID;
 }

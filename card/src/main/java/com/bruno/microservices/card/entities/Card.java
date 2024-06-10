@@ -5,9 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tb_card")
@@ -18,7 +17,8 @@ import javax.persistence.Table;
 public class Card {
 
     @Id
-    private String cardID;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID cardID;
 
     private String cardNumber;
 
@@ -28,5 +28,5 @@ public class Card {
 
     private Double cardLimit;
 
-    private String accountID;
+    private UUID accountID;
 }

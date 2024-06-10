@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/cards")
@@ -23,25 +24,25 @@ public class CardController {
 
     @PostMapping("/{accountID}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Card createNewCard(@RequestBody CardDTO cardDTO, @PathVariable String accountID) {
+    public Card createNewCard(@RequestBody CardDTO cardDTO, @PathVariable UUID accountID) {
         return cardService.createNewCard(cardDTO, accountID);
     }
 
     @GetMapping("/{cardID}")
     @ResponseStatus(HttpStatus.OK)
-    public Card findCardById(@PathVariable String cardID) {
+    public Card findCardById(@PathVariable UUID cardID) {
         return cardService.findCardById(cardID);
     }
 
     @PutMapping("/{cardID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Card updateCard(@RequestBody CardDTO cardDTO, @PathVariable String cardID) {
+    public Card updateCard(@RequestBody CardDTO cardDTO, @PathVariable UUID cardID) {
         return cardService.updateCard(cardDTO, cardID);
     }
 
     @DeleteMapping("/{cardID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCardById(@PathVariable String cardID) {
+    public void deleteCardById(@PathVariable UUID cardID) {
         cardService.deleteCardById(cardID);
     }
 }
