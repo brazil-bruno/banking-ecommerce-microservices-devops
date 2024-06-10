@@ -21,9 +21,23 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID orderID;
 
-    private String clientID;
+    private String clientName;
 
-    private String deliveryAddressID;
+    private String clientPhone;
+
+    private String publicArea;
+
+    private String addressNumber;
+
+    private String complement;
+
+    private String neighborhood;
+
+    private String zipCode;
+
+    private String city;
+
+    private String state;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
