@@ -5,6 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @FeignClient(value = "address", url = "${address.url}")
 public interface AddressFeignClient {
 
@@ -12,6 +14,7 @@ public interface AddressFeignClient {
     @ResponseStatus(HttpStatus.CREATED)
     Address createNewAddress(@RequestBody Address address);
 
-    @GetMapping("/{addressID}")
-    Address findAddressById(@PathVariable String addressID);
+    @DeleteMapping("/api/addresses/{addressID}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteAddressById(@PathVariable UUID addressID);
 }
