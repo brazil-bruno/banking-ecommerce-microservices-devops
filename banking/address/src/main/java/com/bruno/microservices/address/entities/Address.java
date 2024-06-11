@@ -1,11 +1,14 @@
 package com.bruno.microservices.address.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -14,7 +17,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 @Builder
-public class Address {
+public class Address implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,4 +37,10 @@ public class Address {
     private String city;
 
     private String state;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createdAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updatedAt;
 }
