@@ -22,10 +22,10 @@ public class PaymentController {
         return paymentService.findAllPayments();
     }
 
-    @PostMapping
+    @PostMapping("order-id/{orderID}/card-id/{cardID}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Payment createNewPayment(@RequestBody Payment payment) {
-        return paymentService.createNewPayment(payment);
+    public Payment createNewPayment(@PathVariable UUID orderID, @PathVariable UUID cardID) {
+        return paymentService.createNewPayment(orderID, cardID);
     }
 
     @GetMapping("/{paymentID}")
