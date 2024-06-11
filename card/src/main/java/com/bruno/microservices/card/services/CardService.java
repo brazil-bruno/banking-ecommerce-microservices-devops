@@ -46,6 +46,7 @@ public class CardService {
 
         Card entity = cardRepository.getOne(cardID);
         entity.setCardPassword(cardDTO.getCardPassword());
+        entity.setCardLimit(cardDTO.getCardLimit());
         return cardRepository.save(entity);
 
     }
