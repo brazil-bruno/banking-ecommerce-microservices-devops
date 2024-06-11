@@ -19,4 +19,10 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID paymentID;
+
+    private UUID orderID;
+
+    private UUID cardID;
+
+    private double totalPaid;
 }

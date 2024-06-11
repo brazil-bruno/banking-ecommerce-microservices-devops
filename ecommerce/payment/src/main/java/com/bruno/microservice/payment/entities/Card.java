@@ -19,7 +19,7 @@ public class Card {
 
     private String cardPassword;
 
-    private Double cardLimit;
+    private double cardLimit;
 
     private UUID accountID;
 }
