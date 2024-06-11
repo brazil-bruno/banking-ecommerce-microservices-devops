@@ -1,12 +1,14 @@
 package com.bruno.microservices.address.controllers;
 
-import com.bruno.microservices.address.entities.Address;
+import com.bruno.microservices.address.dto.AddressDTO;
 import com.bruno.microservices.address.services.AddressService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -18,25 +20,25 @@ public class AddressController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Address> findAllAddresses() {
-        return addressService.findAllAddresses();
+    public Page<AddressDTO> findAllAddresses(Pageable pageable) {
+        return addressService.findAllAddresses(pageable);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Address createNewAddress(@RequestBody Address address) {
-        return addressService.createNewAddress(address);
+    public AddressDTO createNewAddress(@RequestBody @Valid AddressDTO addressDTO) {
+        return addressService.createNewAddress(addressDTO);
     }
 
     @GetMapping("/{addressID}")
-    public Address findAddressById(@PathVariable UUID addressID) {
+    public AddressDTO findAddressById(@PathVariable UUID addressID) {
         return addressService.findAddressById(addressID);
     }
 
     @PutMapping("/{addressID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Address updateAddress(@RequestBody Address address, @PathVariable UUID addressID) {
-        return addressService.updateAddress(address, addressID);
+    public AddressDTO updateAddress(@RequestBody @Valid AddressDTO addressDTO, @PathVariable UUID addressID) {
+        return addressService.updateAddress(addressDTO, addressID);
     }
 
     @DeleteMapping("/{addressID}")
