@@ -1,11 +1,20 @@
 package com.bruno.microservices.address.services;
 
+import com.bruno.microservices.address.dto.AddressDTO;
 import com.bruno.microservices.address.entities.Address;
 import com.bruno.microservices.address.repositories.AddressRepository;
+import com.bruno.microservices.address.services.exceptions.DataBaseException;
+import com.bruno.microservices.address.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.persistence.EntityNotFoundException;
+import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -14,40 +23,61 @@ public class AddressService {
 
     private final AddressRepository addressRepository;
 
-    public List<Address> findAllAddresses() {
-        return addressRepository.findAll();
+    public Page<AddressDTO> findAllAddresses(Pageable pageable) {
+        Page<Address> addresses = addressRepository.findAll(pageable);
+        return addresses.map(address -> new AddressDTO(address));
     }
 
-    public Address createNewAddress(Address address) {
-        Address entity = Address.builder()
-                .publicArea(address.getPublicArea())
-                .addressNumber(address.getAddressNumber())
-                .complement(address.getComplement())
-                .neighborhood(address.getNeighborhood())
-                .zipCode(address.getZipCode())
-                .city(address.getCity())
-                .state(address.getState())
+    public AddressDTO createNewAddress(AddressDTO addressDTO) {
+        Address address = Address.builder()
+                .publicArea(addressDTO.getPublicArea())
+                .addressNumber(addressDTO.getAddressNumber())
+                .complement(addressDTO.getComplement())
+                .neighborhood(addressDTO.getNeighborhood())
+                .zipCode(addressDTO.getZipCode())
+                .city(addressDTO.getCity())
+                .state(addressDTO.getState())
+                .createdAt(new Date())
                 .build();
-        return addressRepository.save(entity);
+        addressRepository.save(address);
+        return new AddressDTO(address);
     }
 
-    public Address findAddressById(UUID addressID) {
-        return addressRepository.findById(addressID).get();
+    public AddressDTO findAddressById(UUID addressID) {
+        Optional<Address> address = addressRepository.findById(addressID);
+        Address entity = address.orElseThrow(() -> new ResourceNotFoundException("Address id not found!"));
+        return new AddressDTO(entity);
     }
 
-    public Address updateAddress(Address address, UUID addressID) {
-        Address entity = addressRepository.findById(addressID).get();
-        entity.setPublicArea(address.getPublicArea());
-        entity.setAddressNumber(address.getAddressNumber());
-        entity.setComplement(address.getComplement());
-        entity.setNeighborhood(address.getNeighborhood());
-        entity.setZipCode(address.getZipCode());
-        entity.setCity(address.getCity());
-        entity.setState(address.getState());
-        return addressRepository.save(entity);
+    public AddressDTO updateAddress(AddressDTO addressDTO, UUID addressID) {
+        try {
+            Address address = addressRepository.getOne(addressID);
+            copyDtoToEntity(addressDTO, address);
+            address = addressRepository.save(address);
+            return new AddressDTO(address);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Address id not found: " + addressID);
+        }
     }
 
     public void deleteAddressById(UUID addressID) {
-        addressRepository.deleteById(addressID);
+        try {
+            addressRepository.deleteById(addressID);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Address id not found: " + addressID);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Integrity violation!.");
+        }
+    }
+
+    private void copyDtoToEntity(AddressDTO addressDTO, Address address) {
+        address.setPublicArea(addressDTO.getPublicArea());
+        address.setAddressNumber(addressDTO.getAddressNumber());
+        address.setComplement(addressDTO.getComplement());
+        address.setNeighborhood(addressDTO.getNeighborhood());
+        address.setZipCode(addressDTO.getZipCode());
+        address.setCity(address.getCity());
+        address.setState(addressDTO.getState());
+        address.setUpdatedAt(new Date());
     }
 }
