@@ -1,13 +1,15 @@
 package com.bruno.microservices.client.controllers;
 
 import com.bruno.microservices.client.dto.ClientDTO;
-import com.bruno.microservices.client.entities.Client;
+import com.bruno.microservices.client.dto.ClientNewDTO;
 import com.bruno.microservices.client.services.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -19,26 +21,26 @@ public class ClientController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Client> findAllClients() {
-        return clientService.findAllClients();
+    public Page<ClientNewDTO> findAllClients(Pageable pageable) {
+        return clientService.findAllClients(pageable);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Client createNewClient(@RequestBody ClientDTO clientDTO) {
+    public ClientDTO createNewClient(@RequestBody @Valid ClientDTO clientDTO) {
         return clientService.createNewClient(clientDTO);
     }
 
     @GetMapping("/{clientID}")
     @ResponseStatus(HttpStatus.OK)
-    public Client findClientById(@PathVariable UUID clientID) {
+    public ClientNewDTO findClientById(@PathVariable UUID clientID) {
         return clientService.findClientById(clientID);
     }
 
     @PutMapping("/{clientID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Client updateClient(@RequestBody Client client, @PathVariable UUID clientID) {
-        return clientService.updateClient(client, clientID);
+    public ClientNewDTO updateClient(@RequestBody @Valid ClientNewDTO clientNewDTO, @PathVariable UUID clientID) {
+        return clientService.updateClient(clientNewDTO, clientID);
     }
 
     @DeleteMapping("/{clientID}")
