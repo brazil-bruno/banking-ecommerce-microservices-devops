@@ -39,6 +39,8 @@ public class AddressDTO implements Serializable {
     @NotEmpty(message = "Required field!")
     private String state;
 
+    private UUID clientID;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
 
@@ -54,6 +56,7 @@ public class AddressDTO implements Serializable {
         this.zipCode = address.getZipCode();
         this.city = address.getCity();
         this.state = address.getState();
+        this.clientID = address.getClientID();
         this.createdAt = address.getCreatedAt();
         this.updatedAt = address.getUpdatedAt();
     }
