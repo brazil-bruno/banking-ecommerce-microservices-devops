@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -16,10 +18,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 @Builder
-public class Account {
+public class Account implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Type(type="uuid-char")
     private UUID accountID;
 
     private String accountNumber;
@@ -29,6 +33,8 @@ public class Account {
     private String accountPassword;
 
     private UUID clientID;
+
+    private String clientName;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
