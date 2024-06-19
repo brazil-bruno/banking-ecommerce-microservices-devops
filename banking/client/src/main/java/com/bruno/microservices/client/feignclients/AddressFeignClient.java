@@ -10,11 +10,11 @@ import java.util.UUID;
 @FeignClient(value = "address", url = "${address.url}")
 public interface AddressFeignClient {
 
-    @PostMapping("/api/addresses")
-    @ResponseStatus(HttpStatus.CREATED)
-    Address createNewAddress(@RequestBody Address address);
-
-    @DeleteMapping("/api/addresses/{addressID}")
+    @GetMapping("/api/addresses/find-address-by-client-id/{clientID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteAddressById(@PathVariable UUID addressID);
+    Address findAddressByClientId(@PathVariable UUID clientID);
+
+    @DeleteMapping("/api/addresses/delete-address-by-client-id/{clientID}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteAddressByClientId(@PathVariable UUID clientID);
 }
