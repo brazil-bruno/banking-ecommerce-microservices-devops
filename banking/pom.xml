@@ -22,6 +22,7 @@
         <module>account</module>
         <module>eureka</module>
         <module>gateway</module>
+        <module>oauth</module>
     </modules>
 
     <properties>
