@@ -8,13 +8,15 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class TransactionDTO {
+public class TransactionDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private UUID transactionID;
 
