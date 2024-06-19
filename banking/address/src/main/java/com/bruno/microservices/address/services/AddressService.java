@@ -13,9 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +35,7 @@ public class AddressService {
                 .zipCode(addressDTO.getZipCode())
                 .city(addressDTO.getCity())
                 .state(addressDTO.getState())
+                .clientID(addressDTO.getClientID())
                 .createdAt(new Date())
                 .build();
         addressRepository.save(address);
@@ -45,7 +44,13 @@ public class AddressService {
 
     public AddressDTO findAddressById(UUID addressID) {
         Optional<Address> address = addressRepository.findById(addressID);
-        Address entity = address.orElseThrow(() -> new ResourceNotFoundException("Address id not found!"));
+        Address entity = address.orElseThrow(() -> new ResourceNotFoundException("Address not found!"));
+        return new AddressDTO(entity);
+    }
+
+    public AddressDTO findAddressByClientId(UUID clientID) {
+        Optional<Address> address = addressRepository.findAddressByClientID(clientID);
+        Address entity = address.orElseThrow(() -> new ResourceNotFoundException("Client not found!"));
         return new AddressDTO(entity);
     }
 
@@ -56,7 +61,7 @@ public class AddressService {
             address = addressRepository.save(address);
             return new AddressDTO(address);
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Address id not found: " + addressID);
+            throw new ResourceNotFoundException("Address not found");
         }
     }
 
@@ -64,7 +69,18 @@ public class AddressService {
         try {
             addressRepository.deleteById(addressID);
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException("Address id not found: " + addressID);
+            throw new ResourceNotFoundException("Address not found");
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Integrity violation!.");
+        }
+    }
+
+    public void deleteAddressByClientId(UUID clientID) {
+        AddressDTO address = findAddressByClientId(clientID);
+        try {
+            addressRepository.deleteById(address.getAddressID());
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Client not found");
         } catch (DataIntegrityViolationException e) {
             throw new DataBaseException("Integrity violation!.");
         }
