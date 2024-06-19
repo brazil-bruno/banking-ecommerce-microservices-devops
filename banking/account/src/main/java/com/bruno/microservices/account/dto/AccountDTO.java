@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
@@ -23,11 +20,10 @@ public class AccountDTO implements Serializable {
     private String accountNumber;
 
     private double accountBalance;
-    @NotEmpty(message = "Required field!")
-    @Length(min = 6, max = 6, message = "Must be 6 characters!")
-    private String accountPassword;
 
     private UUID clientID;
+
+    private String clientName;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
@@ -39,8 +35,8 @@ public class AccountDTO implements Serializable {
         this.accountID = account.getAccountID();
         this.accountNumber = account.getAccountNumber();
         this.accountBalance = account.getAccountBalance();
-        this.accountPassword = account.getAccountPassword();
         this.clientID = account.getClientID();
+        this.clientName = account.getClientName();
         this.createdAt = account.getCreatedAt();
         this.updatedAt = account.getUpdatedAt();
     }
