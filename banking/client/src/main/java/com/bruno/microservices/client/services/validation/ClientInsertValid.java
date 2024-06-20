@@ -11,7 +11,6 @@ import javax.validation.Payload;
 @Constraint(validatedBy = ClientInsertValidator.class)
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-
 public @interface ClientInsertValid {
     String message() default "Validation error";
 

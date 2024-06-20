@@ -11,7 +11,6 @@ import javax.validation.Payload;
 @Constraint(validatedBy = ClientUpdateValidator.class)
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-
 public @interface ClientUpdateValid {
     String message() default "Validation error";
 
