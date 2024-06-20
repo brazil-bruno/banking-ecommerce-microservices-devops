@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
@@ -39,6 +40,7 @@ public class AddressDTO implements Serializable {
     @NotEmpty(message = "Required field!")
     private String state;
 
+    @NotNull(message = "Required field!")
     private UUID clientID;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
