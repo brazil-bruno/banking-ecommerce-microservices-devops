@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
@@ -54,6 +55,7 @@ public class AddressService {
         return new AddressDTO(entity);
     }
 
+    @Transactional
     public AddressDTO updateAddress(AddressDTO addressDTO, UUID addressID) {
         try {
             Address address = addressRepository.getOne(addressID);

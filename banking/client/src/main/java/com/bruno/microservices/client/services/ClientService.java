@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
@@ -35,6 +36,7 @@ public class ClientService {
         return clients.map(client -> new ClientDTO(client));
     }
 
+    @Transactional
     public ClientDTO createNewClient(ClientInsertDTO clientInsertDTO) {
         Client client = new Client();
         copyDtoToEntityNew(clientInsertDTO, client);
@@ -60,6 +62,7 @@ public class ClientService {
         return client;
     }
 
+    @Transactional
     public ClientDTO updateClient(ClientUpdateDTO clientUpdateDTO, UUID clientID) {
         try {
             Client client = clientRepository.getOne(clientID);

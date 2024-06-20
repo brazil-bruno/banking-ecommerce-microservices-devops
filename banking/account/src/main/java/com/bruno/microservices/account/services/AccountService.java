@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
@@ -59,6 +60,7 @@ public class AccountService {
         return new AccountDTO(entity);
     }
 
+    @Transactional
     public AccountDTO updateAccount(AccountNewDTO accountNewDTO, UUID accountID) {
         try {
             Account account = accountRepository.getOne(accountID);
