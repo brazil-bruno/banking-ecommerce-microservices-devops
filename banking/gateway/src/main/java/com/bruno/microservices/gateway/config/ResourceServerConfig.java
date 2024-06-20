@@ -55,6 +55,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             http.headers().frameOptions().disable();
         }
 
+        // Postgres
+        if (Arrays.asList(env.getActiveProfiles()).contains("dev")) {
+            http.headers().frameOptions().disable();
+        }
+
         http.authorizeRequests()
                 .antMatchers(PUBLIC).permitAll()
                 .antMatchers(HttpMethod.GET, CLIENT).hasAnyRole("CLIENT", "ADMIN")
