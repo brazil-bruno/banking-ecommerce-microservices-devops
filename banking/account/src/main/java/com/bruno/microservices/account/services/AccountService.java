@@ -75,7 +75,7 @@ public class AccountService {
         try {
             accountRepository.deleteById(accountID);
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException("Address not found");
+            throw new ResourceNotFoundException("Account not found");
         } catch (DataIntegrityViolationException e) {
             throw new DataBaseException("Integrity violation!.");
         }
