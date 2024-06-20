@@ -45,6 +45,7 @@ public class ClientDTO implements Serializable {
         this.email = client.getEmail();
         this.clientPhone = client.getClientPhone();
         this.createdAt = client.getCreatedAt();
+        this.updatedAt = client.getUpdatedAt();
         client.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
     }
 }
