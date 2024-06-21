@@ -32,9 +32,88 @@ services:
       - postgres
     restart: unless-stopped
 
+  # EUREKA
+  eureka:
+    image: place here your docker image
+    container_name: eureka
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+
+  # ADDRESS
+  address:
+    image: place here your docker image
+    container_name: address
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - postgres
+
+  # CLIENT
+  client:
+    image: place here your docker image
+    container_name: client
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - postgres
+
+  # ACCOUNT
+  account:
+    image: place here your docker image
+    container_name: account
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - postgres
+
+  # OAUTH
+  oauth:
+    image: place here your docker image
+    container_name: oauth
+    environment:
+      - SECURITY_OAUTH2_CLIENT_CLIENT-ID= place here your client id
+      - SECURITY_OAUTH2_CLIENT_CLIENT-SECRET= place here your client secret
+      - JWT_SECRET= place here your secret
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+
+  # GATEWAY
+  gateway:
+    image: place here your docker image
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - JWT_SECRET= place here your secret
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+
 ## Networks
 networks:
   postgres:
+    driver: bridge
+  spring:
     driver: bridge
 
 ## Volumes
