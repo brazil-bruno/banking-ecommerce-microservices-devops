@@ -32,6 +32,15 @@ services:
       - postgres
     restart: unless-stopped
 
+  # Zipkin
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - spring
+
   # EUREKA
   eureka:
     image: place here your docker image
@@ -90,9 +99,9 @@ services:
     image: place here your docker image
     container_name: oauth
     environment:
-      - SECURITY_OAUTH2_CLIENT_CLIENT-ID= place here your client id
-      - SECURITY_OAUTH2_CLIENT_CLIENT-SECRET= place here your client secret
-      - JWT_SECRET= place here your secret
+      - SECURITY_OAUTH2_CLIENT_CLIENT-ID=banking
+      - SECURITY_OAUTH2_CLIENT_CLIENT-SECRET=banking123
+      - JWT_SECRET=MY-JWT-SECRET
       - SPRING_PROFILES_ACTIVE=docker
     networks:
       - spring
@@ -104,7 +113,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - JWT_SECRET= place here your secret
+      - JWT_SECRET=MY-JWT-SECRET
       - SPRING_PROFILES_ACTIVE=docker
     networks:
       - spring
