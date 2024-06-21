@@ -4,6 +4,7 @@ import com.bruno.microservices.account.dto.AccountDTO;
 import com.bruno.microservices.account.dto.AccountNewDTO;
 import com.bruno.microservices.account.entities.Account;
 import com.bruno.microservices.account.entities.Client;
+import com.bruno.microservices.account.event.AccountEvent;
 import com.bruno.microservices.account.feignclients.ClientFeignClient;
 import com.bruno.microservices.account.repositories.AccountRepository;
 import com.bruno.microservices.account.services.exceptions.DataBaseException;
@@ -14,6 +15,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,8 @@ public class AccountService {
 
     private final ClientFeignClient clientFeignClient;
 
+    private final KafkaTemplate<Account, AccountEvent> kafkaTemplate;
+
     public Page<AccountDTO> findAllAccounts(Pageable pageable) {
         Page<Account> accounts = accountRepository.findAll(pageable);
         return accounts.map(account -> new AccountDTO(account));
@@ -47,7 +51,10 @@ public class AccountService {
                     .clientName(client.getClientName())
                     .createdAt(new Date())
                     .build();
-            accountRepository.save(entity);
+            entity = accountRepository.save(entity);
+
+            kafkaTemplate.send("notificationTopic", new AccountEvent(entity));
+
             return new AccountDTO(entity);
         } catch (FeignException e) {
             throw new ResourceNotFoundException("Client not found");
