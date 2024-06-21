@@ -40,6 +40,7 @@ public class Address implements Serializable {
 
     private String state;
 
+    @Type(type="uuid-char")
     private UUID clientID;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

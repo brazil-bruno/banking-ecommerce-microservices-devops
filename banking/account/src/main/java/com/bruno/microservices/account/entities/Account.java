@@ -32,6 +32,7 @@ public class Account implements Serializable {
 
     private String accountPassword;
 
+    @Type(type="uuid-char")
     private UUID clientID;
 
     private String clientName;
