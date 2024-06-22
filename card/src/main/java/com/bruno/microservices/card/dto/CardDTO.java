@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CardDTO {
+public class CardDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String cardNumber;
 
@@ -20,4 +22,6 @@ public class CardDTO {
     private Double cardLimit;
 
     private UUID accountID;
+
+    private String clientName;
 }
