@@ -22,12 +22,6 @@ public class CardController {
         return cardService.findAllCards();
     }
 
-    @PostMapping("/{accountID}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Card createNewCard(@RequestBody CardDTO cardDTO, @PathVariable UUID accountID) {
-        return cardService.createNewCard(cardDTO, accountID);
-    }
-
     @GetMapping("/{cardID}")
     @ResponseStatus(HttpStatus.OK)
     public Card findCardById(@PathVariable UUID cardID) {
