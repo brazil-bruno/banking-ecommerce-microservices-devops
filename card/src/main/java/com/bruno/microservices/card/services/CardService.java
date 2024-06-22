@@ -6,6 +6,7 @@ import com.bruno.microservices.card.event.AccountEvent;
 import com.bruno.microservices.card.repositories.CardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,6 +17,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class CardService {
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final CardRepository cardRepository;
 
@@ -28,25 +31,12 @@ public class CardService {
         Card entity = Card.builder()
                 .cardNumber(cardNumberGenerate())
                 .cvc(cvcNumberGenerate())
-                .cardPassword("123456")
+                .cardPassword(bCryptPasswordEncoder.encode(cardPasswordGenerate()))
                 .cardLimit(10000.0)
                 .accountID(accountEvent.getAccountID())
                 .clientName(accountEvent.getClientName())
                 .build();
         cardRepository.save(entity);
-    }
-
-    public Card createNewCard(CardDTO cardDTO, UUID accountID) {
-
-        Card entity = Card.builder()
-                .cardNumber(cardNumberGenerate())
-                .cvc(cvcNumberGenerate())
-                .cardPassword(cardDTO.getCardPassword())
-                .cardLimit(10000.0)
-                .accountID(cardDTO.getAccountID())
-                .build();
-        return cardRepository.save(entity);
-
     }
 
     public Card findCardById(UUID cardID) {
@@ -84,5 +74,15 @@ public class CardService {
             cvcNumber += Integer.toString(n);
         }
         return cvcNumber;
+    }
+
+    private String cardPasswordGenerate() {
+        Random rand = new Random();
+        String cardPassword = "";
+        for (int i = 0; i < 6; i++) {
+            int n = rand.nextInt(10) + 0;
+            cardPassword += Integer.toString(n);
+        }
+        return cardPassword;
     }
 }
