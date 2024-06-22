@@ -1,13 +1,14 @@
 package com.bruno.microservices.card.services;
 
 import com.bruno.microservices.card.dto.CardDTO;
-import com.bruno.microservices.card.entities.Account;
 import com.bruno.microservices.card.entities.Card;
-import com.bruno.microservices.card.feignclients.AccountFeignClient;
+import com.bruno.microservices.card.event.AccountEvent;
 import com.bruno.microservices.card.repositories.CardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -18,21 +19,31 @@ public class CardService {
 
     private final CardRepository cardRepository;
 
-    private final AccountFeignClient accountFeignClient;
-
     public List<Card> findAllCards() {
         return cardRepository.findAll();
     }
 
+    @KafkaListener(topics = "notificationTopic")
+    public void createNewCard(AccountEvent accountEvent) throws IOException {
+        Card entity = Card.builder()
+                .cardNumber(cardNumberGenerate())
+                .cvc(cvcNumberGenerate())
+                .cardPassword("123456")
+                .cardLimit(10000.0)
+                .accountID(accountEvent.getAccountID())
+                .clientName(accountEvent.getClientName())
+                .build();
+        cardRepository.save(entity);
+    }
+
     public Card createNewCard(CardDTO cardDTO, UUID accountID) {
-        Account account = accountFeignClient.findAccountById(accountID);
 
         Card entity = Card.builder()
                 .cardNumber(cardNumberGenerate())
                 .cvc(cvcNumberGenerate())
                 .cardPassword(cardDTO.getCardPassword())
                 .cardLimit(10000.0)
-                .accountID(account.getAccountID())
+                .accountID(cardDTO.getAccountID())
                 .build();
         return cardRepository.save(entity);
 
