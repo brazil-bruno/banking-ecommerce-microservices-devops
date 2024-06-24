@@ -1,3 +1,6 @@
 FROM openjdk:11
-ADD target/card-1.0-SNAPSHOT.jar card-1.0-SNAPSHOT.jar
-ENTRYPOINT ["java","-jar","/card-1.0-SNAPSHOT.jar"]
+
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} card.jar
+
+ENTRYPOINT ["java","-jar","/card.jar"]
