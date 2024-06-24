@@ -84,7 +84,7 @@ services:
 
   # EUREKA
   eureka:
-    image: place here your docker image
+    image: brunobrazil/eureka:v1
     container_name: eureka
     ports:
       - "8761:8761"
@@ -95,7 +95,7 @@ services:
 
   # ADDRESS
   address:
-    image: place here your docker image
+    image: brunobrazil/address:v1
     container_name: address
     ports:
       - "8083:8083"
@@ -110,7 +110,7 @@ services:
 
   # CLIENT
   client:
-    image: place here your docker image
+    image: brunobrazil/client:v1
     container_name: client
     ports:
       - "8082:8082"
@@ -125,7 +125,7 @@ services:
 
   # ACCOUNT
   account:
-    image: place here your docker image
+    image: brunobrazil/account:v1
     container_name: account
     ports:
       - "8081:8081"
@@ -142,7 +142,7 @@ services:
 
   # OAUTH
   oauth:
-    image: place here your docker image
+    image: brunobrazil/oauth:v1
     container_name: oauth
     environment:
       - SECURITY_OAUTH2_CLIENT_CLIENT-ID=banking
@@ -156,7 +156,7 @@ services:
 
   # GATEWAY
   gateway:
-    image: place here your docker image
+    image: brunobrazil/gateway:v1
     container_name: gateway
     ports:
       - "8080:8080"
@@ -167,6 +167,23 @@ services:
       - spring
     depends_on:
       - zipkin
+
+  # CARD
+  card:
+    image: brunobrazil/card:v1
+    container_name: card
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+      - broker-kafka
+    depends_on:
+      - postgres
+      - zipkin
+      - kafka
 
 ## Networks
 networks:
