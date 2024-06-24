@@ -1,0 +1,36 @@
+# ADDRESS
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: address
+spec:
+  #replicas: 1
+  selector:
+    matchLabels:
+      app: address
+  template:
+    metadata:
+      labels:
+        app: address
+    spec:
+      containers:
+        - name: address
+          image: brunobrazil/address:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8083
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "docker"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: address
+spec:
+  selector:
+    app: address
+  ports:
+    - port: 8083
+      targetPort: 8083
+  type: ClusterIP

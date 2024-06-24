@@ -1,0 +1,42 @@
+# OAUTH
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth
+spec:
+  #replicas: 1
+  selector:
+    matchLabels:
+      app: oauth
+  template:
+    metadata:
+      labels:
+        app: oauth
+    spec:
+      containers:
+        - name: oauth
+          image: brunobrazil/oauth:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8084
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "docker"
+            - name: SECURITY_OAUTH2_CLIENT_CLIENT-ID
+              value: banking
+            - name: SECURITY_OAUTH2_CLIENT_CLIENT-SECRET
+              value: banking123
+            - name: JWT_SECRET
+              value: MY-JWT-SECRET
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oauth
+spec:
+  selector:
+    app: oauth
+  ports:
+    - port: 8084
+      targetPort: 8084
+  type: ClusterIP

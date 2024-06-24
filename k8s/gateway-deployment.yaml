@@ -1,0 +1,39 @@
+#GATEWAY
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  #replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: brunobrazil/gateway:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "docker"
+            - name: JWT_SECRET
+              value: MY-JWT-SECRET
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+spec:
+  selector:
+    app: gateway
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30000
+  type: LoadBalancer
