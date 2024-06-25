@@ -1,7 +1,8 @@
 # Banking Ecommerce Microservices DevOps
+[![NPM](https://img.shields.io/npm/l/react)](https://github.com/brazil-bruno/banking-ecommerce-microservices-devops/blob/main/LICENSE)
 
 # About the project
-The purpose of the project is to show the implementation of the resources described below:
+### The purpose of the project is to show the implementation of the resources described below:
 * Microservices Architecture
 * Java 11
 * Spring Boot 2.3.4 RELEASE
