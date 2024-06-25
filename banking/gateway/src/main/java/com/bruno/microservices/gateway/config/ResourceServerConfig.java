@@ -8,6 +8,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
@@ -29,7 +30,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private JwtTokenStore tokenStore;
 
-    private static final String[] PUBLIC = {"/oauth/oauth/token", "/account/api/transactions/**", "/h2-console/**"};
+    private static final String[] PUBLIC = {
+            "/address/v2/api-docs",
+            "/client/v2/api-docs",
+            "/account/v2/api-docs",
+            "/oauth/oauth/token",
+            "/account/api/transactions/**",
+            "/h2-console/**"
+    };
 
     private static final String[] CLIENT = {
             "/client/api/clients/find-by-id/**",
@@ -90,5 +98,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
     }
-
 }
