@@ -15,7 +15,7 @@
 * JwtToken, RefreshToken and JwtTokenEnhancer
 * Authentication and Authorization
 * BCryptPasswordEncoder
-* Kafka, Fafdrop and Zookeeper
+* Kafka, Kafdrop and Zookeeper
 * Netflix Eureka
 * Openfeign
 * Zipkin and Sleuth
